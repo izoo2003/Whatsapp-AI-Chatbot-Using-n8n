@@ -1,0 +1,147 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        48,
+        0
+      ],
+      "id": "2115f44a-ad6b-4fe7-a508-046a67fddf81",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "phi3:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        176
+      ],
+      "id": "81bac9d3-4847-4438-8352-e1886f1ea904",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "AgwTUXxJRzMb3hnP",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        176
+      ],
+      "id": "d5f351a4-13d2-4e66-b90a-dc3512437ebb",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "861419460394348",
+        "recipientPhoneNumber": "923130113926",
+        "textBody": "= {{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "797861a5-8265-45af-875e-ea508e2e8583",
+      "name": "Send message",
+      "webhookId": "38d21f33-6501-45e7-8fdb-25e98cfcdab2",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "dxcsLbInqZp6jNk7",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "332dc80e-e1f0-43a1-9d89-45880d172fa8",
+      "name": "When chat message received",
+      "webhookId": "972b07ba-fcca-4faf-bb33-fc028ca5d525"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7fbbbe7f-eff6-49c1-a24a-086289f17711",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "40c4eae3cf5c0ebd7b90ca890ad822f4b34bc79d1feb19c02972b171c73a88b1"
+  },
+  "id": "fkGawjRD91jRcMf7",
+  "tags": []
+}
